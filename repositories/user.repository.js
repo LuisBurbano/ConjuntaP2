@@ -20,8 +20,16 @@ export const obtainAllUsers = async () => {
   }
 };
 
-export const obtainUserById = (id) => {
-  return DATA_USER.find((user) => user.id === id);
+export const obtainUserByEmail = async (email) => {
+  try {
+    await client.connect();
+    const myDB = client.db("pizzeria");
+    const myColl = myDB.collection("users");
+    const user = await myColl.findOne({ email: email});
+    return user;
+  } finally {
+    await client.close();
+  }
 };
 
 export const insertUser = async (user) => {

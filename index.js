@@ -3,15 +3,19 @@ import  {DELIVERY_PATH}  from  './constants/delivery.path.js';
 import  {PRODUCT_PATH}  from  './constants/product.path.js';
 import {createDelivery, getDeliveries} from  './controllers/delivery.controller.js';
 import {createProduct, getProducts} from  './controllers/product.controller.js';
-import  {createUser, getUsers} from  './controllers/user.controller.js';
-import express from 'express'
+import  {createUser, getUsers,getUserByEmail} from  './controllers/user.controller.js';
+import express from 'express';
+import cors from 'cors';
 const app = express()
 app.use(express.json()) 
+app.use(cors());
 const port = 3000
 
 //seccion de usuarios
 app.get(USER_PATH.main, getUsers);
 app.post(USER_PATH.main, createUser);
+//seccion de usuarios
+app.get(`${USER_PATH.main}/email/:email`, getUserByEmail);
 
 
 //seccion de productos
