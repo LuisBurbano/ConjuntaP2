@@ -9,7 +9,7 @@ export const createUser = async (req, res) => {
 
     // const user = {
     //     id: 2,
-    //     name: "Mero te amo",
+    //     name: "Mero",
     //     // Add more fields as needed
     //   };
     // console.log(user);
