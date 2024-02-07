@@ -1,9 +1,11 @@
 import  {USER_PATH}  from  './constants/user.path.js';
-import  {DELIVERY_PATH}  from  './constants/delivery.path.js';
+
 import  {PRODUCT_PATH}  from  './constants/product.path.js';
-import {createDelivery, getDeliveries} from  './controllers/delivery.controller.js';
-import {createProduct, getProducts} from  './controllers/product.controller.js';
+
+import {createProduct, getProducts, deleteProduct} from  './controllers/product.controller.js';
 import  {createUser, getUsers,getUserByEmail} from  './controllers/user.controller.js';
+import {authRouthes} from './repositories/auth.repository.js';
+
 import express from 'express';
 import cors from 'cors';
 const app = express()
@@ -21,10 +23,9 @@ app.get(`${USER_PATH.main}/email/:email`, getUserByEmail);
 //seccion de productos
 app.get(PRODUCT_PATH.main, getProducts);
 app.post(PRODUCT_PATH.main, createProduct);
+app.delete(`${PRODUCT_PATH.main}/:id`, deleteProduct);
 
-//seccion de deliveries
-app.get(DELIVERY_PATH.main, getDeliveries);
-app.post(DELIVERY_PATH.main, createDelivery);
+app.use(authRouthes);
 
 
 

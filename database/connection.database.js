@@ -1,14 +1,23 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-import { MongoClient, ServerApiVersion } from  'mongodb';
-const uri = "mongodb+srv://adminPizza:6i82PjLNVh9Xt4M@pizzeria.dwwqof4.mongodb.net/?retryWrites=true&w=majority";
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAqvFvLobZGjRziTSG4OP1Vf0ye0Cnqdv4",
+  authDomain: "webparcial2.firebaseapp.com",
+  projectId: "webparcial2",
+  storageBucket: "webparcial2.appspot.com",
+  messagingSenderId: "513106959623",
+  appId: "1:513106959623:web:fe76b6b4b6f69008e839a2"
+};
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-export const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const googleProvider = new GoogleAuthProvider();
+export const db = getFirestore(app);
 
-
+console.log("Firebase initialized!", db);

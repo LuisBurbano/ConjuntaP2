@@ -1,41 +1,56 @@
-import { client } from "../database/connection.database.js";
+import { collection, addDoc, doc, deleteDoc, getDocs, getDoc } from "firebase/firestore";
+import { db } from "../database/connection.database.js";
 
 export const obtainAllProducts = async () => {
   try {
-    let productList = [];
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    const myDB = client.db("pizzeria");
-    const myColl = myDB.collection("products");
-    const result = await myColl.find({});
-    await result.forEach((document) => {
-      productList.push(document);
+    const productList = [];
+    const productsCollection = collection(db, "products");
+    const snapshot = await getDocs(productsCollection);
+    snapshot.forEach((doc) => {
+      productList.push({ id: doc.id, ...doc.data() });
     });
-
     return productList;
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
+  } catch (error) {
+    console.error("Error obtaining products: ", error);
+    throw error;
   }
 };
 
-export const obtainProductById = (id) => {
-  return DATA_PRODUCT.find((product) => product.id === id);
+export const obtainProductById = async (id) => {
+  try {
+    const productRef = doc(db, "products", id);
+    const docSnapshot = await getDoc(productRef);
+    if (docSnapshot.exists()) {
+      return { id: docSnapshot.id, ...docSnapshot.data() };
+    } else {
+      console.log("No such document!");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error obtaining product: ", error);
+    throw error;
+  }
 };
 
 export const insertProduct = async (product) => {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    const myDB = client.db("pizzeria");
-    const myColl = myDB.collection("products");
-    const result = await myColl.insertOne(product);
-    console.log(`A document was inserted with the _id: ${result.insertedId}`);
-    return result;
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
+    const productsCollection = collection(db, "products");
+    const docRef = await addDoc(productsCollection, product);
+    console.log("Document written with ID: ", docRef.id);
+    return docRef.id;
+  } catch (error) {
+    console.error("Error inserting product: ", error);
+    throw error;
+  }
+};
+
+export const deleteProductById = async (id) => {
+  try {
+    const productDoc = doc(db, "products", id);
+    await deleteDoc(productDoc);
+    console.log("Product deleted successfully");
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    throw error;
   }
 };
