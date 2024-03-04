@@ -10,6 +10,7 @@ import {
   getProducts,
   deleteProduct,
   getProductById,
+  editProduct
 } from "./controllers/product.controller.js";
 import {
   createUser,

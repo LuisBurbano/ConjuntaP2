@@ -50,3 +50,10 @@ export const editProduct = async (req, res) => {
         res.status(500).send("Error editing product");
     }
 };
+
+export const getProductById = async (req, res) => {
+    const { id } = req.params;
+    const product = await obtainProductById(id);
+
+    res.send(product);
+  };
