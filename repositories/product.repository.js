@@ -1,4 +1,4 @@
-import { collection, addDoc, doc, deleteDoc, getDocs, getDoc } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs, getDoc } from "firebase/firestore";
 import { db } from "../database/connection.database.js";
 
 export const obtainAllProducts = async () => {
@@ -16,21 +16,24 @@ export const obtainAllProducts = async () => {
   }
 };
 
-export const obtainProductById = async (id) => {
+
+export const obtainProductById = async (productId) => {
   try {
-    const productRef = doc(db, "products", id);
-    const docSnapshot = await getDoc(productRef);
-    if (docSnapshot.exists()) {
-      return { id: docSnapshot.id, ...docSnapshot.data() };
+    const productsCollection = collection(db, "products");
+    const q = query(productsCollection, where("title", "==", productId));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      return querySnapshot.docs[0].data();
     } else {
-      console.log("No such document!");
       return null;
     }
   } catch (error) {
-    console.error("Error obtaining product: ", error);
+    console.error("Error obtaining prioduct by id: ", error);
     throw error;
   }
 };
+
+
 
 export const insertProduct = async (product) => {
   try {

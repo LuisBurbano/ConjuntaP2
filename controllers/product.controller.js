@@ -1,4 +1,4 @@
-import {insertProduct, obtainAllProducts, deleteProductById} from  '../repositories/product.repository.js';
+import {insertProduct, obtainAllProducts, deleteProductById, obtainProductById} from  '../repositories/product.repository.js';
 
 export const getProducts = async (req, res) => {
     let products= await obtainAllProducts();
@@ -29,3 +29,11 @@ export const deleteProduct = async (req, res) => {
         res.status(500).send("Error deleting product");
     }
 };
+
+export const getProductById = async (req, res) => {
+    const { id } = req.params;
+    const product = await obtainProductById(id);
+  
+    res.send(product);
+  };
+  
