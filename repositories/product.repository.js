@@ -1,4 +1,4 @@
-import { collection, addDoc, query, where, getDocs, getDoc } from "firebase/firestore";
+import { collection, addDoc, doc, deleteDoc, getDocs, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../database/connection.database.js";
 
 export const obtainAllProducts = async () => {
@@ -54,6 +54,18 @@ export const deleteProductById = async (id) => {
     console.log("Product deleted successfully");
   } catch (error) {
     console.error("Error deleting product:", error);
+    throw error;
+  }
+};
+
+export const updateProductById = async (id, newData) => {
+  try {
+    const productDoc = doc(db, "products", id);
+    await updateDoc(productDoc, newData);
+    console.log("Product updated successfully");
+    return { id, ...newData };
+  } catch (error) {
+    console.error("Error updating product:", error);
     throw error;
   }
 };

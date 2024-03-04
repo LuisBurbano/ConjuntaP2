@@ -46,16 +46,16 @@ app.use(express.json());
 app.use(cors());
 const port = 3000;
 
-//seccion de usuarios
+// Rutas para la sección de usuarios
 app.get(USER_PATH.main, getUsers);
 app.post(USER_PATH.main, createUser);
-//seccion de usuarios
 app.get(`${USER_PATH.main}/email/:email`, getUserByEmail);
 
 //seccion de productos
 app.get(`${PRODUCT_PATH.main}/:id`, getProductById);
 app.get(PRODUCT_PATH.main, getProducts);
 app.post(PRODUCT_PATH.main, createProduct);
+app.put(`${PRODUCT_PATH.main}/:id`, editProduct); // Nueva ruta para editar un producto
 app.delete(`${PRODUCT_PATH.main}/:id`, deleteProduct);
 
 //seccion de ingredientes

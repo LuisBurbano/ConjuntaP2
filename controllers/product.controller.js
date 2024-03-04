@@ -1,8 +1,13 @@
-import {insertProduct, obtainAllProducts, deleteProductById, obtainProductById} from  '../repositories/product.repository.js';
+import { insertProduct, obtainAllProducts, deleteProductById, updateProductById } from '../repositories/product.repository.js';
 
 export const getProducts = async (req, res) => {
-    let products= await obtainAllProducts();
-    res.send(products);
+    try {
+        let products = await obtainAllProducts();
+        res.send(products);
+    } catch (error) {
+        console.error("Error obtaining products:", error);
+        res.status(500).send("Error obtaining products");
+    }
 };
 
 export const createProduct = async (req, res) => {
@@ -30,10 +35,18 @@ export const deleteProduct = async (req, res) => {
     }
 };
 
-export const getProductById = async (req, res) => {
-    const { id } = req.params;
-    const product = await obtainProductById(id);
-  
-    res.send(product);
-  };
-  
+export const editProduct = async (req, res) => {
+    const productId = req.params.id;
+    const { title, quantity, price } = req.body;
+    try {
+        const updatedProduct = await updateProductById(productId, { title, quantity, price });
+        if (updatedProduct) {
+            res.send(updatedProduct);
+        } else {
+            res.status(404).send(`Product with ID ${productId} not found`);
+        }
+    } catch (error) {
+        console.error("Error editing product:", error);
+        res.status(500).send("Error editing product");
+    }
+};
