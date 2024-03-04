@@ -19,7 +19,7 @@ export const obtainAllDeliverys = async () => {
 export const obtainUserByCedula = async (cedula) => {
   try {
     const deliverysCollection = collection(db, "deliverys");
-    const q = query(deliverysCollection, where("cedula", "==", cedula));
+    const q = query(deliverysCollection, where("email", "==", cedula));
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
       return querySnapshot.docs[0].data();

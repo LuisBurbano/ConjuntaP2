@@ -4,6 +4,7 @@ import { PRODUCT_PATH } from "./constants/product.path.js";
 import { MENU_PATH } from "./constants/menu.path.js";
 import { COMPRAS_PATH } from "./constants/compra.path.js";
 import { DELIVERY_PATH } from "./constants/deliverys.path.js";
+import { ENTREGA_PATH } from "./constants/entrega.path.js";
 
 import {
   createProduct,
@@ -39,6 +40,7 @@ import {
 } from "./controllers/compra.controller.js";
 
 import { createDelivery, getDeliverys,getDeliveryByCedula } from "./controllers/deliverys.controller.js";
+import { createEntrega, getEntregas, getEntregaByEmail, updateEntega} from "./controllers/entrega.controller.js";
 
 import express from "express";
 import cors from "cors";
@@ -84,7 +86,11 @@ app.get(DELIVERY_PATH.main, getDeliverys);
 app.post(DELIVERY_PATH.main, createDelivery);
 app.get(`${DELIVERY_PATH.main}/email/:email`, getDeliveryByCedula);
 
-
+//seccion entregas
+app.get(ENTREGA_PATH.main, getEntregas);
+app.post(ENTREGA_PATH.main, createEntrega);
+app.get(`${ENTREGA_PATH.main}/:email`, getEntregaByEmail);
+app.put(`${ENTREGA_PATH.main}/:id`, updateEntega);
 
 
 app.listen(port, () => {
